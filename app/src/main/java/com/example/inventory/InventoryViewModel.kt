@@ -35,8 +35,25 @@ class InventoryViewModel(private val itemDao: ItemDao) : ViewModel() {
         return true
     }
 
+    // こういう一行functionを嫌う人をどう説得するべきか？
+    // FragmentでitemDaoを取得する処理はちょっと長いので、毎回書くと煩雑
+    //  -> じゃあ１回の場合ならいいのか？そこは他と揃えようでいい気がする
+    //    -> もしくは、大体の場合は１回じゃない(insert, update, delete)から
     fun retrieveItem(id: Int): LiveData<Item> {
         return itemDao.getItem(id).asLiveData()
+    }
+
+    private fun updateItem(item: Item) {
+        viewModelScope.launch {
+            itemDao.update(item)
+        }
+    }
+
+    fun sellItem(item: Item) {
+        if (item.quantityInStock > 0) {
+            val newItem = item.copy(quantityInStock = item.quantityInStock - 1)
+            updateItem(newItem)
+        }
     }
 }
 
