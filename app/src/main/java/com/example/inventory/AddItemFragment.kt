@@ -29,7 +29,7 @@ import com.example.inventory.data.Item
 import com.example.inventory.databinding.FragmentAddItemBinding
 
 /**
- * Fragment to add or update an item in the Inventory database.
+ * Fragment to add or `update` an item in the Inventory database.
  */
 class AddItemFragment : Fragment() {
 
@@ -58,6 +58,7 @@ class AddItemFragment : Fragment() {
         return binding.root
     }
 
+    // Add a new value by passing the entered value through the ViewModel
     private fun addNewItem() {
         if (isEntryValid()) {
             viewModel.addNewItem(
